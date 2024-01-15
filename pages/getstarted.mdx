@@ -1,0 +1,41 @@
+import { Cards, Card } from 'nextra/components'
+
+# Get Started
+
+## Installation
+RGE.js is available to install via `npm` and the `jsdelivr` cdn.
+
+#### NPM Install
+```npm copy
+npm install rge.js@latest
+```
+
+#### CDN Install
+```html copy
+<script type="module">
+    import * as rgejs from "https://cdn.jsdelivr.net/npm/rge.js@latest/index.js"
+    window.rgejs = rgejs;
+</script>
+```
+
+## Compatibility
+RGE.js is compatible with most frameworks, and all browsers which support the `canvas` element.
+
+| Framework  | Compatible? 
+| :----- | :----: |
+| HTML, CSS, JS    |  ✅   |
+| ReactJS | ✅  |
+| NextJS (CSR Components) | ✅  |
+| NextJS (SSR Components) | ❌ |
+| VueJS | Untested |
+| Svelte/SvelteKit | Untested |
+| AngularJS | Untested |
+
+## Setting Up
+<Cards>
+  <Card title="HTML/CSS/JS" href="/setup/html" />
+  <Card title="ReactJS" href="/setup/react" />
+  <Card title="NextJS" href="/setup/nextjs" />
+</Cards>
+
+## Learn

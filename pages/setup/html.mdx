@@ -1,0 +1,50 @@
+import { FileTree } from 'nextra/components'
+
+
+# Set Up 
+
+## Setting up RGE.js using HTML/JS
+This page walks you through installing, configuring, and running your RGE.js environment using HTML and JS.
+
+## File Structure
+Recommended file structure:
+<FileTree>
+  <FileTree.Folder name="public" defaultOpen>
+    <FileTree.File name="index.html" />
+    <FileTree.Folder name="javascript" defaultOpen>
+        <FileTree.File name="script.js" />
+    </FileTree.Folder>
+  </FileTree.Folder>
+</FileTree>
+
+## Install
+Paste this into your HTML file's `body`:
+```html copy filename="index.html"
+<canvas id="gameCanvas" width="1350" height="720"></canvas>
+
+<script type="module">
+    import * as rgejs from "https://cdn.jsdelivr.net/npm/rge.js@latest/index.js"
+    window.rgejs = rgejs;
+</script>
+
+<!-- Link your script.js file -->
+<script type="module" src="./script.js"></script>
+```
+Great! Now RGE.js has been installed via the `cdn` and is added to the global `window` object. Let's now take a look at instantiating RGE.js.
+
+## Instantiating RGE.js
+In order to instantiate RGE.js, we have to go to our `script.js` file.
+
+```javascript copy filename="javascript/script.js"
+// Creating a shorthand for rgejs
+const r = rgejs;
+
+// Takes the canvas ID and expected FPS.
+const rge = new r.Engine('gameCanvas', 60);
+
+rge.start();
+```
+
+Great job! You have now installed and instantiated RGE.js.
+
+[Learn the basics of RGE.js](/learn/rgeobject)

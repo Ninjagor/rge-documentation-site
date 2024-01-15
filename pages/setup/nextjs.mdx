@@ -1,0 +1,99 @@
+import { FileTree } from 'nextra/components'
+
+
+# Set Up 
+
+## Setting up RGE.js using NextJS
+This page walks you through installing, configuring, and running your RGE.js environment using ReactJS.
+
+## File Structure
+Recommended file structure:
+<FileTree>
+ <FileTree.Folder name="public">
+    <FileTree.File name="index.html" />
+  </FileTree.Folder>
+  <FileTree.Folder name="app" defaultOpen>
+    <FileTree.File name="layout.jsx" />
+    <FileTree.File name="page.jsx" />
+    <FileTree.File name="index.css" />
+  </FileTree.Folder>
+  <FileTree.File name="package.json" />
+  <FileTree.File name="package-lock.json" />
+</FileTree>
+
+## Install
+Paste this into your terminal at your project's directory:
+```npm copy
+npm install rge.js@latest
+```
+
+We then import RGE.js like this:
+```javascript copy
+import * as r from "rge.js";
+```
+
+Great! Now RGE.js has been installed via `npm`. Let's now take a look at instantiating RGE.js.
+
+## Instantiating RGE.js
+In order to instantiate RGE.js, we first have to create a `canvas` element, and attach a `ref` to it.
+
+```jsx filename="src/page.jsx" copy
+"use client";
+import React, { useRef, useEffect } from 'react';
+import * as r from "rge.js";
+
+function App() {
+  const canvasRef = useRef(null);
+  return (
+    <div className="App">
+    <canvas
+      ref={canvasRef}
+      id="gameCanvas"
+      // Set your desired canvas size
+      width={800}
+      height={600}
+    />
+    </div>
+  );
+}
+
+export default App;
+```
+
+Now inside of a `useEffect` we will write our logic to instantiate RGE.js.
+```jsx filename="app/page.jsx" copy
+"use client";
+import React, { useRef, useEffect } from 'react';
+import * as r from "rge.js";
+
+function App() {
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    // Takes the canvas ID and expected FPS.
+    const rge = new r.Engine('gameCanvas', 60);
+
+    rge.start();
+
+    return () => {
+        // Safely dispose of RGE when component is unmounted.
+        rge.stop()
+    }
+  }, [])
+  return (
+    <div className="App">
+    <canvas
+      ref={canvasRef}
+      id="gameCanvas"
+      // Set your desired canvas size
+      width={800}
+      height={600}
+    />
+    </div>
+  );
+}
+
+export default App;
+```
+Great job! You have now installed and instantiated RGE.js.
+
+[Learn the basics of RGE.js](/learn/rgeobject)

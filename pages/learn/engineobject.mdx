@@ -1,0 +1,129 @@
+import { Callout } from 'nextra/components'
+
+# The RGE Object
+
+An important thing to note is that RGE.js follows an `Object Oriented` paradigm. This means that any time you want to perform practically any action, you would do so via an object.
+
+<Callout emoji="⚠️" type="warning">
+    This tutorial assumes that you have a basic understanding of object oriented programming.
+</Callout>
+
+## Creating the Engine object
+The Engine object is one of the most important objects, and provides an interface to perform nearly all of your project's logic related actions. Instantiating the engine is rather simple.
+
+```javascript copy 
+// First parameter is ID of the canvas
+// Second parameter is target FPS
+const rge = new r.Engine('gameCanvas', 60)
+```
+
+Great job! You have successfully instantiated the `Engine` object!
+
+## Basic Utilities
+The `Engine` object provides a vast amount of utilities which you can use in order to make your project function. Let's take a look at some of the most used ones.
+
+### `start()`
+#### Code Snippet
+```javascript copy 
+// Goes at EOF
+rge.start()
+```
+#### Use Case
+`start()` initiates the rendering of entities, as well as attaching event detectors (such as onClick, onKeyPress, collision, etc) to the rendered entities. 
+
+<Callout type="warning" emoji="⚠️">
+  Component unmounting and remounting in React can cause hydration errors if not handled correctly.
+</Callout>
+
+### `stop()`
+#### Code Snippet
+```javascript copy 
+rge.stop()
+```
+Using with React/NextJS to handle hydration errors caused by the component dismounting:
+```jsx copy
+useEffect(() => {
+    const rge = new r.Engine('gameCanvas', 60);
+    rge.start();
+
+    return () => {
+        rge.stop();
+        delete rge;
+    }
+}, []);
+```
+
+#### Use Case
+`stop()` deletes all entities and event detectors from the canvas, and detaches itself. It can be used for a variety of reasons. The two main reasons are: 
+- If you want to detach one `Engine` instance from the canvas, and attach a different one
+- You are handling component lifecycles (with react) to make sure that hydration errors do not occur.
+
+<Callout emoji="💡">
+  `stop()` can be used in the return statement of `useEffect` to prevent hydration errors! 
+</Callout>
+
+<Callout type="error" emoji="️❗️">
+  Make sure to delete `rge` once you have stopped the Engine
+</Callout>
+
+### `addEntity()`
+
+
+#### Code Snippet 
+```javascript copy 
+rge.addEntity(entity)
+```
+
+#### Use Case
+Registers an entity to an array. When `start()` is called, it cycles through each entity every refresh, and paints them to the canvas.
+
+<Callout type="info" emoji="ℹ">
+  You can read more about entites [here](/learn/entities)
+</Callout>
+
+### `destroyEntity()`
+
+#### Code Snippet 
+```javascript copy 
+rge.destroyEntity(entity)
+delete entity;
+```
+
+#### Use Case
+Deletes the entity from the entity array, so it is no longer rendered. Also set's a value inside the entity to `destroyed` so it no longer looks for collisions.
+
+### `setTickFunction()`
+
+#### Code Snippet 
+```javascript copy 
+function tick() {
+
+}
+
+rge.setTickFunction(tick)
+```
+
+#### Use Case
+`setTickFunction()` is used to set a function to be the "tick", which is run every animation frame.
+
+### `addKeyPressAction()`
+
+#### Code Snippet 
+```javascript copy 
+rge.addKeyPressAction({
+    'w': {
+        press: () => {
+            console.log('w is pressed')
+        },
+        release: () => {
+            console.log('w is released')
+        }
+    }
+})
+```
+
+#### Use Case
+`addKeyPressAction()` is used to register keyPress actions. RGE automatically will listen for those key presses, and will perform the according actions.
+
+### More Utilities
+The utilities mentioned above are only the few most commonly used ones. There are a huge plethora of utilities provided by the RGE.js engine. You can read more about them [here](/)
