@@ -1,1 +1,116 @@
-# Basic Entities
+# Entities
+
+This page goes over a brief overview of Entities, their usage, and their properties. For a more in-depth view, look [here](/)
+
+## What are Entities?
+Entities in RGE.js are simply pre-made objects which have certain attributes and methods attached to them. Some common examples of entities include `Rect`, `Ellipse`, and `Polygon`. All of those entities are extensions of the parent `Entity` class, which we look look at now.
+
+## Parent Entity Class
+All of the entities mentioned beforehand (`Rect`, `Ellipse`, `Polygon`) are extensions of the parent `Entity`. This is what `Entity` looks like:
+
+```javascript
+class Entity {
+    constructor(x, y, zIndex = 0) {
+        this.x = x;
+        this.y = y;
+        this.id = null;
+        this.zIndex = zIndex;
+        this.isDestroyed = false;
+        this.onClick = null;
+    }
+    update() { }
+    render(context) { }
+    addId(id) {
+        this.id = id;
+    }
+    removeId(id) {
+        this.id = null;
+    }
+    modifyId(id) {
+        this.id = id;
+    }
+    destroy() {
+        this.isDestroyed = true;
+    }
+    onClickHandler() {
+        if (this.onClick) {
+            this.onClick();
+        }
+    }
+}
+```
+### Properties
+As you can see, `Entity` contains 6 properties:
+
+| Property  | Use Case 
+| :----- | :----: |
+| x | X Position of the Entity |
+| y | Y Position of the Entity |
+| id | A value used to categorize or identify the Entity |
+| zIndex | Z Index (or depth) of the Entity |
+| isDestroyed | bool to check if entity is destroyed or not |
+| onClick | Sets a callback as its onClick func |
+### Methods
+`Entity` also implements 7 methods, but only 4 of them can be directly used.
+|  Method  | Use Case  | Can be directly used? |
+| :----- | :----: | :----: |
+| update | Update the x and y vals of the entity | ✅ |
+| addId | Sets the `id` property of the Entity | ✅ |
+| removeId | Sets the `id` property of the Entity to a null value | ✅ |
+| modifyId | Updates the `id` property of the Entity | ✅ |
+| destroy | Called by the `Engine` to de-activate the Entity. | ❌ |
+| render | Called by the `Engine` every animation frame to paint the entity onto the canvas | ❌ |
+| onClickHandler | Called by the `Engine` when the `Entity` is clicked | ❌ |
+
+### How it works
+Let's take a closer look to understand how Entities work. We will start by understanding how to initialize an Entity.
+
+```javascript
+// Assuming you have intialized the engine and saved it to a var named rge.
+const myNewEntity = new r.Entity(0, 0);
+rge.addEntity(myNewEntity);
+```
+When we do this, what happens behind the scenes? First, a new instance of the `Entity` object is created. This is saved to the variable `myNewEntity`. Afterwards, we call `addEntity`. This *registers* `myNewEntity` into an array called `entities` (which is a property defined in `Engine`). An example:
+
+`entities` array before registering the new Entity:
+
+```javascript
+[]
+```
+
+`entities` array after registering the new Entity:
+```javascript
+[
+    {
+        // Properties of the entity
+        "x": 0,
+        "y": 0,
+        "zIndex": 0,
+        "isDestroyed": false,
+        "onClick": null,
+        // Additional methods provided by the entity, such as `render`
+        // ...
+    }
+]
+```
+
+Now, on every animation frame which is requested by the engine, a function called `renderEntities` runs, which iterates over the `entities` array and calls the `render` method for each entity, providing the canvas's context as a parameter.
+
+## Premade Entities
+You may have noticed that the base `Entity` class itself is practically of no use when you just register it by itself. This is because it:
+ - Does not implement important characteristics such as width, height, color, texture, etc
+ - Does not provide a `render` function (it is blank), so the engine cannot render anything from it
+ - Does not implement a `update` method
+
+RGE.js instead provides you with pre-made entities, with which you can craft practically anything you wish. There are only 3 pre-made entities, but they are extremely robust and should cover over 90% of use cases. These entities are `Rect`, `Ellipse`, and `Polygon`. Let's go over them one by one.
+
+### Rect
+Rect is extremely similar to the base `Entity`. It only adds characteristics such as width, height, and color. (As well as a texture, which we will get to later). You instantiate a `Rect` like this:
+
+```javascript
+// x, y, width, height, bg color, render from center (bool)
+const rectangle = new r.Rect(0, 0, 400, 300, "red", true);
+rge.addEntity(rectangle);
+```
+
+Rect's rendering can be customized to center it at different points. The default is rendering from the center, but you can also choose to set the origin of the `Rect` to the top left corner. (you do this by using the `disableCentered` method).

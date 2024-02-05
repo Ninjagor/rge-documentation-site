@@ -1,8 +1,4 @@
 {
     "engineobject": "The Engine Object",
-    "entities": "Entities",
-    "tickfunction": "Game Loop",
-    "inputs": "User Inputs",
-    "moreentities": "More Entities",
-    "customentities": "Custom Entities"
+    "entities": "Entities"
 }
